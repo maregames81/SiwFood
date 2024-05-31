@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Aggiungi un ingrediente</h1>
+	<form th:action="@{/newIngrediente}" method="post">
+		<div>
+			Nome: <span><input required type="text"
+				th:field="${ingrediente.nome}" /></span>
+		</div>
+		
+		<div>
+			<span><button type="submit">Conferma</button></span>
+		</div>
+	</form>
+</body>
+</html>
