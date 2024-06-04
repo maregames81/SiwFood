@@ -1,6 +1,7 @@
 package it.uniroma3.siw.model;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,6 +42,11 @@ public class Cuoco {
 	@OneToMany
 	@JoinColumn(name="cuoco_id")
 	private List<Ricetta> ricette;
+	
+
+	public Cuoco() {
+		this.ricette= new LinkedList<>();
+	}
 
 	public Long getId() {
 		return id;

@@ -3,13 +3,19 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/cuochi.css">
 </head>
 <body>
-	<h1>Ricette</h1>
-	<div th:if="${ricette.isEmpty()}">Non ci sono ricette nel sistema
-		di questo cuoco</div>
+
+<div class="cuoco-img">
+		<img th:src="*{'data:image/jpeg;base64,'+{cuoco.immagine}}"
+			alt="">
+	</div>
+	
+	
+	<div th:if="${cuoco.ricette.isEmpty()}">Non ci sono ricette nel sistema di questo cuoco</div>
 	<ul>
-		<div th:each="ricetta : ${ricette}">
+		<div th:each="ricetta : ${cuoco.ricette}">
 			<a href="@{'/ricette' + '/' + ${ricetta.id}}"><img
 				th:src="*{'data:image/jpeg;base64,'+{ricetta.foto}}"></a> <a
 				th:href="@{'/ricetta' + '/' + ${ricetta.id}}"
@@ -17,8 +23,5 @@
 		</div>
 
 	</ul>
-
-
-
 </body>
 </html>

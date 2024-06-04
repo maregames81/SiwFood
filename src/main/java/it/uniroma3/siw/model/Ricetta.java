@@ -1,10 +1,13 @@
 package it.uniroma3.siw.model;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +16,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Ricetta {
@@ -33,14 +35,18 @@ public class Ricetta {
 	@Column(columnDefinition = "TEXT")
 	private String foto;
 
-	@NotNull
-	@ManyToOne
+	
+	@ManyToOne//(fetch = FetchType.LAZY)
 	private Cuoco cuoco;
 
-	@OneToMany
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name="ricetta_id")
 	private List<QuantitaIngrediente> quantitaIngrediente;
+	
 
+	public Ricetta() {
+		this.quantitaIngrediente= new LinkedList<>();
+	}
 
 	public Long getId() {
 		return id;

@@ -10,7 +10,7 @@
 	<div th:if="${cuochi.isEmpty()}">Non ci sono cuochi nel sistema</div>
 	<ul>
 		<div th:each="cuoco : ${cuochi}">
-		<a href="@{'/cuochi' + '/' + ${cuoco.id}}"><img th:src="*{'data:image/jpeg;base64,'+{cuoco.immagine}}"></a>
+		<a th:href="@{'/cuochi' + '/' + ${cuoco.id}}"><img th:src="*{'data:image/jpeg;base64,'+{cuoco.immagine}}"></a>
 			<a th:href="@{'/cuochi' + '/' + ${cuoco.id}}"
 				th:text="${cuoco.nome} + ' (' + ${cuoco.cognome} + ')'"></a>
 		</div>

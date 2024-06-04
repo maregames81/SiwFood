@@ -8,13 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Cuoco;
+import it.uniroma3.siw.model.QuantitaIngrediente;
 import it.uniroma3.siw.model.Ricetta;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.CuocoService;
 import it.uniroma3.siw.service.IngredienteService;
 import it.uniroma3.siw.service.RicettaService;
 
@@ -26,6 +29,8 @@ public class RicettaController {
 	@Autowired IngredienteService ingredienteService;
 	
 	@Autowired CredentialsService credentialsService;
+	
+	@Autowired CuocoService cuocoService;
 	
 	
 	@GetMapping("/ricette")
@@ -41,10 +46,13 @@ public class RicettaController {
 		return "newRicetta.html";
 	}
 	
+	
+	
 	@PostMapping(value = { "/newRicetta" })
 	public String newRicetta(@ModelAttribute("ricetta") Ricetta ricetta,
 			@ModelAttribute("userDetails") UserDetails userD,@RequestParam("imageFile") MultipartFile imageFile,
-			@ModelAttribute("descrizione") String desc, Model model) throws IOException {
+			@RequestParam("descrizione") String desc, Model model) throws IOException {
+		
 		String username = userD.getUsername();
 		Cuoco c= credentialsService.getCredentials(username).getUser().getCuoco();
 		
@@ -52,7 +60,23 @@ public class RicettaController {
 		ricetta.setCuoco(c);
 		ricetta.setDescrizione(desc);
 		ricettaService.save(ricetta, imageFile);
+		c.getRicette().add(ricetta);
+		cuocoService.save(c);
+		
 		model.addAttribute("ingredienti", this.ingredienteService.findAll());
-		return"aggiungiIngrediente.html";
+		model.addAttribute("qty", new QuantitaIngrediente());
+		model.addAttribute("ricetta", ricetta);
+		
+		System.out.println("Nome Ricetta: " + c.getRicette().get(1));
+		
+		return "aggiungiIngrediente.html";
+	} 
+	
+	@GetMapping("/ricette/{id}")
+	public String ricetta(@PathVariable("id") Long id, Model model) {
+		Ricetta r= ricettaService.findById(id);
+		model.addAttribute("ricetta", r);
+		model.addAttribute("ingredienti", r.getQuantitaIngrediente());
+		return "ricetta.html";
 	}
 }

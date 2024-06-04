@@ -22,6 +22,7 @@ public class User {
 	private String cognome;
 	@NotBlank
 	private String email;
+	
 	@OneToOne
 	private Cuoco cuoco;
 

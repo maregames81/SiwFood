@@ -19,7 +19,7 @@ public class Ingrediente {
 	private Long id;
 	
 	@Column(nullable=false)
-	private String Nome;
+	private String nome;
 
 	public Long getId() {
 		return id;
@@ -30,16 +30,16 @@ public class Ingrediente {
 	}
 
 	public String getNome() {
-		return Nome;
+		return nome;
 	}
 
 	public void setNome(String nome) {
-		Nome = nome;
+		nome = nome;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Nome, id);
+		return Objects.hash(nome, id);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Ingrediente {
 		if (getClass() != obj.getClass())
 			return false;
 		Ingrediente other = (Ingrediente) obj;
-		return Objects.equals(Nome, other.Nome) && Objects.equals(id, other.id);
+		return Objects.equals(nome, other.nome) && Objects.equals(id, other.id);
 	}
 	
 	

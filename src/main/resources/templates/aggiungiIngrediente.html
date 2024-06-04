@@ -5,14 +5,25 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="/aggiungiIngrediente" method="post">
-		<label for="Ingredienti">Ingredienti</label> <select name="" id="">
-			<option th:each="ingrediente: ${ingredienti}"
-				th:text="${ingrediente.nome}"></option>
-		</select>
-		
-		<label>Anno:</label> <span><input type="text" th:field="${qty.quantita}" /></span>
 
+	<form th:action="@{/aggiungiIngrediente}" method="post">
+		<label for="nomeIngrediente">Nome Ingrediente:</label>
+		<select	name="nomeIngrediente" id="">
+			<option th:each="ingrediente: ${ingredienti}"
+				th:value="${ingrediente.nome}" th:text="${ingrediente.nome}"></option>
+		</select> <label>Quantità(grammi):</label> <span><input type="text"
+			th:field="${qty.quantita}" /></span>
+			
+			<input type="hidden" name="ricettaId" th:value="${ricetta.id}" />
+
+		<button type="submit">Inserisci ingrediente</button>
+		
+		<a th:href="@{'/ricette' + '/' + ${ricetta.id}}">Finito</a>
 	</form>
+
+	
+	
+	
+
 </body>
 </html>
