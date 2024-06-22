@@ -32,4 +32,9 @@ public class IngredienteService {
 	public Ingrediente findByNome(String nome) {
 		return this.ingredienteRepository.findByNome(nome);
 	}
+	
+	@Transactional
+	public boolean existByNome(String nome) {
+		return this.ingredienteRepository.existsByNome(nome);
+	} 
 }

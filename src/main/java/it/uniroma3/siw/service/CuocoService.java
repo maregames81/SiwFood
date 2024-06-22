@@ -38,6 +38,11 @@ public class CuocoService {
 		cuocoRepository.save(cuoco);		
 	}
 	
+	@Transactional
+	public void delete(Long id) {	
+		cuocoRepository.deleteById(id);
+	}
+	
 	
 	
 

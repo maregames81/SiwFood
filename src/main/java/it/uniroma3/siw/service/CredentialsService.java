@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Credentials;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.CredentialsRepository;
 import jakarta.transaction.Transactional;
 
@@ -31,6 +32,12 @@ public class CredentialsService {
 	        Optional<Credentials> result = this.credentialsRepository.findByUsername(username);
 	        return result.orElse(null);
 	    }
+	    
+	    @Transactional
+	    public Credentials findByUser(User u) {
+	        Optional<Credentials> result = this.credentialsRepository.findByUser(u);
+	        return result.orElse(null);
+	    }
 	
 	
 	@Transactional
@@ -39,5 +46,16 @@ public class CredentialsService {
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
     }
+
+	@Transactional
+	public void delete(Long id) {
+		this.credentialsRepository.deleteById(id);
+		
+	}
+
+	public boolean existByUsername(String username) {
+		
+		return this.credentialsRepository.existsByUsername(username);
+	}
 
 }

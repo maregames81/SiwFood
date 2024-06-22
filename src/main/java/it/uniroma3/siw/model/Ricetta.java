@@ -37,6 +37,7 @@ public class Ricetta {
 
 	
 	@ManyToOne//(fetch = FetchType.LAZY)
+	@JoinColumn(name = "cuoco_id")
 	private Cuoco cuoco;
 
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

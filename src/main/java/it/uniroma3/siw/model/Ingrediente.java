@@ -34,7 +34,7 @@ public class Ingrediente {
 	}
 
 	public void setNome(String nome) {
-		nome = nome;
+		this.nome = nome;
 	}
 
 	@Override

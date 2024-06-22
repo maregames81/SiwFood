@@ -3,6 +3,7 @@ package it.uniroma3.siw.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,8 @@ import it.uniroma3.siw.model.Ricetta;
 import it.uniroma3.siw.service.IngredienteService;
 import it.uniroma3.siw.service.QuantitaService;
 import it.uniroma3.siw.service.RicettaService;
+import it.uniroma3.siw.validator.IngredienteValidator;
+import jakarta.validation.Valid;
 
 @Controller
 public class IngredienteController {
@@ -23,6 +26,8 @@ public class IngredienteController {
 	
 	@Autowired RicettaService ricettaService;
 	
+	@Autowired IngredienteValidator ingredienteVal;
+	
 	
 	@GetMapping("/newIngrediente")
 	public String newIngrediente(Model model) {
@@ -31,11 +36,18 @@ public class IngredienteController {
 	}
 	
 	@PostMapping("/newIngrediente")
-	public String newIngrediente(@ModelAttribute("ingrediente") Ingrediente ingrediente, Model model) {
+	public String newIngrediente(@Valid @ModelAttribute("ingrediente") Ingrediente ingrediente,BindingResult bindingResult, Model model) {
 		
-		this.ingredienteService.save(ingrediente);
-		model.addAttribute("ingredienti", this.ingredienteService.findAll());
-		return "newRicetta.html";
+		
+		this.ingredienteVal.validate(ingrediente, bindingResult);
+		
+		if(!bindingResult.hasErrors()) {
+			this.ingredienteService.save(ingrediente);
+		} else {
+			return "newIngrediente.html";
+		}
+		
+		return "redirect:/";
 	}
 	
 	@PostMapping("/aggiungiIngrediente")
@@ -57,6 +69,28 @@ public class IngredienteController {
 		model.addAttribute("ricetta", ricetta);
 		return "aggiungiIngrediente.html";
 	}
+	
+	
+	@GetMapping("/admin/adminIngrediente")
+    public String adminIngrediente(Model model) {
+        model.addAttribute("ingrediente", new Ingrediente());
+        return "/admin/adminIngrediente.html";
+    }
+
+    @PostMapping("/admin/aggiungiIngrediente")
+    public String adminIngrediente(@Valid @ModelAttribute("ingrediente") Ingrediente ingrediente,BindingResult bindingResult, Model model) {
+        
+    	this.ingredienteVal.validate(ingrediente, bindingResult);
+    	
+        
+        if(!bindingResult.hasErrors()) {
+			this.ingredienteService.save(ingrediente);
+		} else {
+			return "/admin/adminIngrediente.html";
+		}
+        
+        return "redirect:/admin/adminIngrediente";
+    }
 	
 	
 

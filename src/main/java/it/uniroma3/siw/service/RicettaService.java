@@ -24,6 +24,7 @@ public class RicettaService {
 		return ricettaRepository.findById(id).get();
 	}
 	
+	@Transactional
 	public List<Ricetta> findByCuoco(Cuoco c){
 		return this.ricettaRepository.findByCuoco(c);
 	}
@@ -36,7 +37,8 @@ public class RicettaService {
 	@Transactional
 	public void save(Ricetta ricetta,MultipartFile file) throws IOException {
 		ricetta.setFoto(Base64.getEncoder().encodeToString(file.getBytes()));
-		ricettaRepository.save(ricetta);		
+		ricettaRepository.save(ricetta);	
+		
 	}
 	
 	
@@ -44,6 +46,12 @@ public class RicettaService {
 	@Transactional
 	public void save(Ricetta ricetta) {
 		ricettaRepository.save(ricetta);		
+	}
+
+	@Transactional
+	public void delete(Long idC) {
+		this.ricettaRepository.deleteById(idC);
+		
 	}
 
 }

@@ -1,5 +1,6 @@
 package it.uniroma3.siw.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class User {
 	@NotBlank
 	private String email;
 	
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Cuoco cuoco;
 
     public Long getId() {
@@ -59,7 +60,6 @@ public class User {
 	}
 	
 	
-
 	public Cuoco getCuoco() {
 		return cuoco;
 	}
